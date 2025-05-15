@@ -31,7 +31,7 @@ L.control.scale({
 }).addTo(map);
 
 // MET Norway Vorhersage visualisieren
-async function showForecast(latlng){
+async function showForecast(latlng) {
     //console.log("Popup erzeugen bei:", latlng);
     let url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${latlng.lat}&lon=${latlng.lng}`;
     //console.log(url);
@@ -41,15 +41,18 @@ async function showForecast(latlng){
 
     // Popup erzeugen
     let details = jsondata.properties.timeseries[0].data.instant.details;
+    let timestamp = new Date(jsondata.properties.meta.updated_at);
     let markup = `
-    <ul>
-        <li> Luftdruck (hPa): ${details.air_pressure_at_sea_level}	</li>
-        <li> Lufttemperatur (°C): ${details.air_temperature}	</li>
-        <li> Bewölkungsgrad (%): ${details.cloud_area_fraction}	 </li>
-        <li> Luftfeuchtigkeit (%): ${details.relative_humidity}	 </li>
-        <li> Windrichtung (°): ${details.wind_from_direction}	 </li>
-        <li> Windgeschwindigkeit (km/h): ${details.wind_speed}	</li>
-    </ul>`;
+        <h3> Wettervorhersage für ${timestamp.toLocalString()} </h3>
+        <ul>
+            <li> Luftdruck (hPa): ${details.air_pressure_at_sea_level}	</li>
+            <li> Lufttemperatur (°C): ${details.air_temperature}	</li>
+            <li> Bewölkungsgrad (%): ${details.cloud_area_fraction}	 </li>
+            <li> Luftfeuchtigkeit (%): ${details.relative_humidity}	 </li>
+            <li> Windrichtung (°): ${details.wind_from_direction}	 </li>
+            <li> Windgeschwindigkeit (km/h): ${details.wind_speed * 3.6}	</li>
+            <li> Windgeschwindigkeit (kn): ${details.wind_speed * 1.94}	</li>
+        </ul>`;
 
 
     L.popup([
@@ -57,7 +60,7 @@ async function showForecast(latlng){
     ], {
         content: markup
     }).openOn(overlays.forecast)
-} 
+}
 
 // auf Kartenklick reagieren
 map.on("click", function (evt) {
