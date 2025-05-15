@@ -34,7 +34,7 @@ L.control.scale({
 async function getPlaceName(url) {
     let response = await fetch(url);
     let jsondata = await response.json();
-    console.log(jsondata);
+    //console.log(jsondata);
     return jsondata.display_name;
 }
 
@@ -73,6 +73,14 @@ async function showForecast(latlng) {
         let time = new Date(jsondata.properties.timeseries[i].time);
         markup += `<img src = "icons/${symbol}.svg" style="width:32px" title = "${time.toLocaleString()}">`;
     }
+
+    // Links zu den JSON-Daten
+    markup += `
+    <p>
+        <a href="${url}" target = "forecast"> Daten downloaden </a> | 
+        <a href="${osmUrl}" target = "forecast"> OSM Details zum Ort </a>
+    </p>
+    `; // target damit ein neuer tab geöffnet wird der forecast heißt
 
     L.popup([
         latlng.lat, latlng.lng
