@@ -51,15 +51,15 @@ async function showForecast(latlng) {
             <li> Luftfeuchtigkeit (%): ${details.relative_humidity}	 </li>
             <li> Windrichtung (°): ${details.wind_from_direction}	 </li>
             <li> Windgeschwindigkeit (km/h): ${details.wind_speed * 3.6}	</li>
-            <li> Windgeschwindigkeit (kn): ${details.wind_speed * 1.94}	</li>
+            <li> Windgeschwindigkeit (kn): ${(details.wind_speed * 1.94).toFixed(1)}	</li>
         </ul>`;
 
     // Wettericons für die nächsten 24 Stunden in 3 Stunden Schritten
     for (let i = 0; i <= 24; i += 3) {
         let symbol = jsondata.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
         //console.log(symbol);
-
-        markup += `<img src = "icons/${symbol}.svg" style="width:32px">`;
+        let time = new Date(jsondata.properties.timeseries[i].time);
+        markup += `<img src = "icons/${symbol}.svg" style="width:32px" title = "${time.toLocaleString()}">`;
     }
 
     L.popup([
