@@ -12,7 +12,7 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], 5);
 // thematische Layer
 let overlays = {
     forecast: L.featureGroup().addTo(map),
-    wind: L.featureGroup().addTo(map)
+    wind: L.featureGroup().addTo(map),
 }
 
 // Layer Control
@@ -102,3 +102,26 @@ map.fire("click", {
         lng: ibk.lng,
     }
 })
+
+async function addWindLayer() {
+    let url = "https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json";
+    let response = await fetch(url);
+    let winddata = await response.json();
+
+    L.velocityLayer({
+        data: winddata,
+        displayValues: true,
+        displayOptions: {
+            velocityType: "Global Wind",
+            position: "bottomleft",
+            emptyString: "No velocity data",
+            angleConvention: "bearingCW",
+            showCardinal: false,
+            speedUnit: "ms",
+            directionString: "Direction",
+            speedString: "Speed",
+        },
+    }).addTo(overlays.wind);
+}
+
+addWindLayer();
