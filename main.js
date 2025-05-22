@@ -103,10 +103,14 @@ map.fire("click", {
     }
 })
 
-async function addWindLayer() {
-    let url = "https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json";
+async function loadWindLayer(url) {
     let response = await fetch(url);
     let winddata = await response.json();
+
+
+loadWindLayer("https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json");
+
+
 
     L.velocityLayer({
         data: winddata,
