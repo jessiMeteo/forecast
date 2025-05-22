@@ -105,27 +105,25 @@ map.fire("click", {
 
 async function loadWindLayer(url) {
     let response = await fetch(url);
-    let winddata = await response.json();
+    let jsondata = await response.json();
 
+    L.velocityLayer({
+        data: jsondata,
+        displayValues: true,
+        displayOptions: {
+            velocityType: "",
+            position: "bottomright",
+            emptyString: "keine Winddaten",
+            angleConvention: "bearingCW",
+            showCardinal: false,
+            speedUnit: "km/h",
+            directionString: "Windrichtung",
+            speedString: "Windgeschwindigkeit",
+        },
+        lineWidth:2,
+    }).addTo(overlays.wind);
+}
 
 loadWindLayer("https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json");
 
 
-
-    L.velocityLayer({
-        data: winddata,
-        displayValues: true,
-        displayOptions: {
-            velocityType: "Global Wind",
-            position: "bottomleft",
-            emptyString: "No velocity data",
-            angleConvention: "bearingCW",
-            showCardinal: false,
-            speedUnit: "ms",
-            directionString: "Direction",
-            speedString: "Speed",
-        },
-    }).addTo(overlays.wind);
-}
-
-addWindLayer();
